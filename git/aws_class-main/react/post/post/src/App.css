@@ -1,0 +1,162 @@
+/* 기본 폰트 및 레이아웃 설정 */
+@import url('https://cdn.jsdelivr.net');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Pretendard', sans-serif; background-color: #fff; color: #333; }
+
+/* 1. Header 관련 스타일 (Header.js에서 사용) */
+.header-container { 
+  width: 100%; 
+  border-bottom: 1px solid #eee; 
+  background: #fff; 
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* 최상단 유틸리티 바 (로그인, 회원가입 등) */
+.top-util-bar { 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  display: flex; 
+  justify-content: flex-end; 
+  padding: 10px 0; 
+}
+.util-menu { 
+  display: flex; 
+  gap: 15px; 
+  list-style: none; 
+  font-size: 12px; 
+  color: #888; 
+}
+.util-menu li { cursor: pointer; }
+
+/* 메인 헤더 (로고, 검색창) */
+.main-header-row { 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 15px 0; 
+}
+.logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+
+.search-bar { 
+  display: flex; 
+  border: 2px solid #2ecc71; 
+  border-radius: 25px; 
+  padding: 6px 20px; 
+  width: 400px; 
+  background: #fff;
+}
+.search-bar input { 
+  border: none; 
+  outline: none; 
+  width: 100%; 
+  font-size: 14px; 
+}
+.search-btn { border: none; background: none; cursor: pointer; font-size: 18px; }
+
+.header-icons { display: flex; gap: 20px; font-size: 22px; cursor: pointer; }
+
+/* 네비게이션 바 */
+.nav-bar { 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  display: flex; 
+  align-items: center; 
+  height: 55px; 
+}
+.category-btn { font-weight: bold; cursor: pointer; }
+.nav-list { 
+  display: flex; 
+  gap: 25px; 
+  list-style: none; 
+  font-weight: 700; 
+  font-size: 15px; 
+  margin-left: 30px; 
+}
+.nav-list li { cursor: pointer; }
+.nav-list li.active { 
+  color: #2ecc71; 
+  border-bottom: 3px solid #2ecc71; 
+  padding-bottom: 5px; 
+}
+
+/* 2. 메인 콘텐츠 스타일 (App.js에서 사용) */
+.container { 
+  width: 100%; 
+}
+
+main { 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  padding: 20px 0 80px; 
+}
+
+/* 메인 배너 */
+.main-banner { 
+  position: relative; 
+  width: 100%; 
+  height: 350px; 
+  background: #fdfdfd; 
+  overflow: hidden; 
+  margin-bottom: 30px; 
+  border-radius: 20px; 
+  display: flex;
+  align-items: center;
+  padding: 0 60px;
+}
+.banner-text { z-index: 2; flex: 1; }
+.banner-text p { font-size: 16px; margin-bottom: 10px; color: #666; }
+.banner-text h1 { font-size: 36px; font-weight: 800; margin-bottom: 15px; }
+
+.banner-img { 
+  width: 450px; 
+  height: 280px; 
+  object-fit: cover; 
+  border-radius: 15px;
+}
+
+/* 카드 그리드 섹션 */
+.card-grid { 
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px; 
+}
+.diet-card { 
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+  padding: 35px; 
+  border: 1px solid #f2f2f2; 
+  border-radius: 25px; 
+  background: #fff;
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+}
+.diet-card:hover { 
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+.card-info h4 { margin-bottom: 8px; color: #999; font-size: 15px; font-weight: 500; }
+.card-info h2 { font-size: 26px; font-weight: 700; }
+
+.card-icon { 
+  width: 110px; 
+  height: 110px; 
+  border-radius: 50%; 
+  background: #f9f9f9;
+}
+
+/* 하단 섹션 */
+.my-greeting-bar { 
+  text-align: center; 
+  padding: 40px; 
+  background: #fafafa; 
+  margin-top: 40px; 
+  border-radius: 20px; 
+  cursor: pointer;
+}
+.my-greeting-bar h2 { font-size: 28px; margin-top: 5px; }

@@ -1,0 +1,20 @@
+.header-container { width: 100%; border-bottom: 1px solid #eee; background: #fff; }
+
+/* 최상단 유틸리티 바 */
+.top-util-bar { max-width: 1200px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 10px 0; }
+.util-menu { display: flex; gap: 15px; list-style: none; margin: 0; padding: 0; font-size: 12px; color: #666; }
+.util-menu li { cursor: pointer; }
+
+/* 메인 로고 및 검색창 라인 */
+.main-header-row { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+.logo { font-size: 28px; font-weight: bold; color: #333; }
+.search-bar { display: flex; border: 2px solid #2ecc71; border-radius: 25px; padding: 5px 20px; width: 400px; }
+.search-bar input { border: none; outline: none; width: 100%; font-size: 14px; }
+.search-btn { border: none; background: none; cursor: pointer; font-size: 18px; }
+
+/* 네비게이션 바 */
+.nav-bar { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 50px; }
+.nav-list { display: flex; gap: 25px; list-style: none; margin: 0 0 0 40px; padding: 0; font-weight: 600; font-size: 15px; }
+.nav-list li { cursor: pointer; color: #333; }
+.nav-list li.active { color: #2ecc71; border-bottom: 3px solid #2ecc71; padding-bottom: 5px; }
+.nav-list li.highlight { color: #e74c3c; }
