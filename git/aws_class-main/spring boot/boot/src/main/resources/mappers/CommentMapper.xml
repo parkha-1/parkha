@@ -44,17 +44,20 @@
     	insert into 
     	comment(co_num, co_ori_num, co_me_id, co_content, co_po_num) 
     	select 
-    		ifnull(max(co_num), 0) + 1,
+    		ifnull(max(co_num), 0) + 1, 
+    		
     		<choose>
     			<!-- 댓글 -->
     			<when test="comment.oriNum == 0">
-    				infull(max(co_num), 0) + 1,
+    				ifnull(max(co_num), 0) + 1,
     			</when>
     			<!-- 대댓 -->
     			<otherwise>
     				#{comment.oriNum},
     			</otherwise>
     		</choose>
+    		 
+    		
     		#{comment.id}, 
     		#{comment.content},
     		#{comment.postNum}
@@ -81,3 +84,7 @@
     		co_num = #{coNum}
     </update>
 </mapper>
+
+
+
+

@@ -11,7 +11,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import kr.hi.auth.model.util.CustomUser;
+import kr.hi.auth.util.CustomUser;
 
 
 

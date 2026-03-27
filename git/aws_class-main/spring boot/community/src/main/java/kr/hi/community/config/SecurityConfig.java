@@ -1,6 +1,6 @@
 package kr.hi.community.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,17 +15,8 @@ import kr.hi.community.service.MemberDetailService;
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	//@Autowired // 필드를 이용한 의존성 주입
-	private final MemberDetailService memberDetailService;
-	
-	//생성자를 이용한 의존성 주입
-	public SecurityConfig(MemberDetailService memberDetailService) {
-		this.memberDetailService = memberDetailService;
-	}
-	
-	@Value("${remember-me.text}")
-	String rermeberMeText;
-	
+	@Autowired
+	MemberDetailService memberDetailService;
 	
 	//암호화 하는 클래스
     @Bean
@@ -65,7 +56,7 @@ public class SecurityConfig {
             	//이 문자열이 바뀌면 이전에 있던 토큰이 무효화 되어 자동 로그인 취소
             	//key에 들어가는 문자열은 노출되면 안됨.
             	//application.properties에 작성해서 관리해야함.
-            	.key("rememberMeText")
+            	.key("abc123")
             	//쿠키 이름
             	.rememberMeCookieName("LC")
             	//쿠키 유효시간(단위 초).

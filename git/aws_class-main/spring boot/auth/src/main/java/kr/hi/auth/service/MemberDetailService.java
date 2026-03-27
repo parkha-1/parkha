@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.hi.auth.dao.UserDAO;
 import kr.hi.auth.domain.UserVO;
-import kr.hi.auth.model.util.CustomUser;
+import kr.hi.auth.util.CustomUser;
 import lombok.AllArgsConstructor;
 
 

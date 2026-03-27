@@ -13,7 +13,7 @@
 		<button type="button" id="btn" onclick="btnClick()">확인</button>
 	</form>
 	<hr>
-	<div id=resultDiv>결과를 알려줄 곳</div>
+	<div id="resultDiv">결과를 알려줄 곳</div>
 	
 	<script type="text/javascript">
 		const form = document.querySelector('#form')
@@ -32,7 +32,7 @@
 					body : formData
 				})
 				if(!response.ok){
-					resultDiv.innerHTML = `<b>요청 실패<b>`
+					resultDiv.innerHTML = `<b>요청 실패</b>`
 					return;
 				}
 				const result = await response.json()
@@ -41,7 +41,7 @@
 				console.error(e)
 				resultDiv.innerHTML = `<b>예외 발생</b>`
 			}finally{
-				btn.disabled = false
+				btn.disabled = false	
 			}
 		}
 	</script>

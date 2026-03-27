@@ -39,12 +39,8 @@ public class PostService {
 	}
 
 	public boolean deletePost(int num) {
-		
 		return postDAO.deletePost(num);
 	}
-
-	
-	
 
 	
 }

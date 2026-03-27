@@ -9,7 +9,11 @@
    </delete>
    
    <insert id="insertLike">
-   		insert into `like` (li_me_id, li_po_num, li_state)
+   		insert into `like`(li_me_id, li_po_num, li_state)
    		values(#{id}, #{postNum}, 1)
    </insert>
 </mapper>
+
+
+
+

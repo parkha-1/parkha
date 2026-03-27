@@ -119,3 +119,9 @@ public class PostController {
 		return "redirect:/post/detail/{num}";
 	}
 }
+
+
+
+
+
+

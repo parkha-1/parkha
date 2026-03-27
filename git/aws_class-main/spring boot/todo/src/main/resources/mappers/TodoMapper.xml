@@ -3,7 +3,7 @@
 <mapper namespace="kr.hi.todo.dao.TodoDAO">
     
     <select id="selectTodos" resultType="TodoVO">
-    	select * from todo
+    	select * from todo 
     	<if test='date != ""'>
     		where date = #{date}
     	</if>
@@ -13,16 +13,15 @@
     <insert id="insertTodo">
     	insert into todo(date, text, `order`)
 		select 
-			#{todo.date},
+			#{todo.date}, 
 			#{todo.text}, 
 			ifnull(max(`order`), 0) + 1 
-		from todo
-		where date = "2026-01-30";
+		from todo 
+		where date = #{todo.date}
     </insert>
     
-    <delete id="deleteTodo" parameterType="int">
-    	 DELETE FROM todo
-        WHERE num = #{todo}
+    <delete id="deleteTodo">
+    	delete from todo where num = #{num}
     </delete>
     
     <update id="updateTodo">

@@ -53,36 +53,40 @@ def save_nl(df:pd.DataFrame, keyword:str, start:int = 1):
 	df.to_csv(f'naver_nl_{keyword}_{start//10 + 1}.csv', encoding="utf-8-sig", index=False)	
 
 def get_naver_news_article(url):
-  """네이버 기사에서 내용을 추출하여 반환"""
+	"""네이버 기사에서 내용을 추출하여 반환"""
 
-  headers = {
-      'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36',
-      'Referer' : 'https://www.naver.com/'
-  }
+	headers = {
+		'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36',
+		'Referer' : 'https://www.naver.com/'
+	}
 
-  response = requests.get(url, headers=headers)
+	response = requests.get(url, headers=headers)
 
-  try:
-    response.raise_for_status()
+	try:
+		response.raise_for_status()
+		
+	except Exception as e:
+		print(f"예외 발생 {e}")
 
-  except Exception as e:
-    print(f"예외 발생 {e}")
-      
-  soup = BeautifulSoup(response.text, 'lxml')
+	soup = BeautifulSoup(response.text, 'lxml')
 
-  article = soup.select_one("#dic_area")
+	article = soup.select_one("#dic_area")
+
+	del_list = [
+		# 기사 중간에 이미지가 있는 박스 => 
+		# 박스 안에 이미지말고 이미지 설명이라든지 숨겨진 글자가 있을 수 있어서
+		'.end_photo_org', 
+		# 기사 앞 요약
+		'.media_end_summary'
+	] # 삭제하고 싶은 요소들
 	
-  # 기사에 있는 요약 제거
-  del_list = ['.ned_photo_org', '.media_end_summary'] # 삭제하고 싶은 요소들
-	
- 
-  for del_sel in del_list:
-    summaries = soup.select(del_sel)
-    for summary in summaries:
-      summary.decompose()
+	for del_sel in del_list:
+		summaries = soup.select(del_sel) 
+		for summary in summaries:
+			# 원하는 요소를 제거
+			summary.decompose()
 
-    return article.text
-
+	return article.text
 
 # 모듈 테스트
 if __name__ == "__main__":

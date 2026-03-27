@@ -10,9 +10,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CommentResponseDTO {
-	
+
 	List<Comment> list;
 	
 	PageMaker pm;
-
 }

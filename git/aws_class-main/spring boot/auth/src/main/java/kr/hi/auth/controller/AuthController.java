@@ -19,10 +19,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.hi.auth.domain.UserDTO;
 import kr.hi.auth.domain.UserVO;
-import kr.hi.auth.model.util.CustomUser;
 import kr.hi.auth.security.jwt.JwtTokenProvider;
 import kr.hi.auth.service.MemberDetailService;
 import kr.hi.auth.service.UserService;
+import kr.hi.auth.util.CustomUser;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -37,8 +37,7 @@ public class AuthController {
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Boolean> signup(
-			@RequestBody UserDTO user
-			){
+			@RequestBody UserDTO user){
 		
 		boolean res = userService.signup(user);
 		
@@ -57,13 +56,14 @@ public class AuthController {
         String accessToken = jwtTokenProvider.createAccessToken(customUser);
         String refreshToken = jwtTokenProvider.createRefreshToken(customUser);
 		
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
+	    // RefreshToken → HttpOnly Cookie
+	    Cookie cookie = new Cookie("refreshToken", refreshToken);
 	    cookie.setHttpOnly(true);
-	    cookie.setSecure(false);
+	    cookie.setSecure(false); // https면 true
 	    cookie.setPath("/");
 	    cookie.setMaxAge(7 * 24 * 60 * 60);
 	    response.addCookie(cookie);
-        
+	    
 		return ResponseEntity.ok(Map.of(
 				"accessToken", accessToken
 		));
@@ -93,6 +93,7 @@ public class AuthController {
 	    if (!jwtTokenProvider.isRefreshToken(refreshToken)) {
 	        return ResponseEntity.status(401).build();
 	    }
+	    
 	    Claims claims = jwtTokenProvider.parseClaims(refreshToken);
 	
 	    String username = claims.getSubject();

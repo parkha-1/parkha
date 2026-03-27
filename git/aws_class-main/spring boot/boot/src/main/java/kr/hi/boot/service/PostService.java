@@ -181,3 +181,6 @@ public class PostService {
 		postDAO.updatePost(poNum, dto);
 	}
 }
+
+
+

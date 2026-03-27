@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
-
 @Data
-
 public class TodoVO {
 	int num;
 	String text;
@@ -18,5 +16,4 @@ public class TodoVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date date;
 	int order;
-
 }
