@@ -1,0 +1,336 @@
+/* 1. 전체 컨테이너: 사이드바와 게시판을 묶어 화면 중앙 정렬 */
+.container {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1550px;
+  margin: 0 auto;
+  padding: var(--page-padding-top) var(--page-padding-x);
+  gap: 50px;
+
+  /* ✅ 좁은 화면에서 overflow(가로스크롤) 방지 */
+  box-sizing: border-box;
+}
+
+/* ✅ 반응형: 화면이 좁아지면 세로로 쌓기 */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 16px;
+  }
+}
+
+/* 2. 사이드바: 왼쪽 위치를 안정감 있게 고정 */
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  text-align: left;
+
+  /* ✅ 반응형에서 자연스럽게 내려오도록 */
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 100%;
+  }
+
+  /* ✅ 모바일/태블릿에서는 메뉴를 가로 스크롤 형태로도 보기 좋게 */
+  .sidebar ul {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .sidebar li {
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0; /* ✅ 기본 margin 제거 */
+}
+
+.sidebar li {
+  padding: 12px 15px;
+  cursor: pointer;
+  color: #888;
+  font-size: 1rem;
+  transition: all 0.2s;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.sidebar li.active {
+  color: #2c3e50;
+  font-weight: 800;
+  background-color: #f1f4f7;
+}
+
+.sidebar li:hover {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  transform: translateX(5px);
+}
+
+@media (max-width: 1024px) {
+  .sidebar li:hover {
+    transform: none; /* ✅ 모바일에서 흔들림 방지 */
+  }
+}
+
+/* 3. 메인 콘텐츠: 남은 영역을 꽉 채워 게시물 확대 */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  /* ✅ flex 안에서 자식이 overflow로 가로 밀지 않게 */
+  min-width: 0;
+}
+
+/* 메뉴바/사이드바 없는 페이지 공통: 양옆 여백 통일 */
+.page-content-area {
+  width: 100%;
+  max-width: var(--page-size);
+  min-height: calc(100vh - var(--header-height));
+  margin: 0 auto;
+  padding: var(--page-padding-top) var(--page-padding-x) var(--page-padding-bottom);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .page-content-area {
+    padding: 24px 20px 40px;
+  }
+}
+
+/* 게시판 그리드: ✅ 화면 폭에 따라 자동으로 1~3열로 변화 */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  margin-bottom: 60px;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+}
+
+@media (max-width: 700px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* 카드 */
+.photo-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+
+  /* ✅ hover 시 그림자 부드럽게 */
+  will-change: transform;
+}
+
+.photo-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(52, 73, 94, 0.1);
+}
+
+@media (max-width: 700px) {
+  .photo-card:hover {
+    transform: none; /* ✅ 모바일에서 hover 튐 방지 */
+  }
+}
+
+/* 이미지 */
+.img-placeholder img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block; /* ✅ 이미지 아래 빈공간 제거 */
+}
+
+@media (max-width: 700px) {
+  .img-placeholder img {
+    height: 240px;
+  }
+}
+
+.photo-info {
+  padding: 22px;
+}
+
+.photo-title {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #2c3e50;
+
+  /* ✅ 제목이 길면 2줄까지만 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 4. 페이지네이션 - 원형 버튼 통일 */
+.board-footer-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.pagination,
+.page-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.pagination-btn,
+.page-buttons button,
+.pagination .nav-btn,
+.pagination .page-num {
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.pagination-btn:hover:not(:disabled),
+.page-buttons button:hover:not(:disabled),
+.pagination .nav-btn:hover:not(:disabled),
+.pagination .page-num:hover {
+  background-color: #f8f9fa;
+  border-color: #34495e;
+  color: #34495e;
+}
+
+.pagination-btn.active,
+.page-buttons button.active,
+.pagination .page-num.active {
+  background: #2c3e50 !important;
+  color: #fff !important;
+  border-color: #2c3e50 !important;
+}
+
+.pagination-btn:disabled,
+.page-buttons button:disabled,
+.pagination .nav-btn:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+/* 5. 글쓰기 버튼 */
+.write-btn {
+  background-color: #34495e !important;
+  color: #fff !important;
+  padding: 12px 35px !important;
+  border-radius: 25px !important;
+  border: none !important;
+  cursor: pointer;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  box-shadow: 0 4px 10px rgba(52, 73, 94, 0.2);
+  transition: all 0.3s ease;
+}
+
+.write-btn:hover {
+  background-color: #2c3e50 !important;
+  transform: translateY(-2px);
+}
+
+/* ✅ 접근성: 키보드 탭 포커스 보이게 */
+.write-btn:focus-visible,
+.pagination-btn:focus-visible,
+.page-buttons button:focus-visible,
+.search-box button:focus-visible {
+  outline: 3px solid rgba(52, 73, 94, 0.35);
+  outline-offset: 2px;
+}
+
+/* 6. 게시물 검색창 */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+  width: 100%;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #d1d8e0;
+  border-radius: 50px;
+  padding: 5px 5px 5px 20px;
+  width: 100%;
+  max-width: 450px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-box:focus-within {
+  border-color: #34495e;
+  box-shadow: 0 0 10px rgba(52, 73, 94, 0.1);
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: #2c3e50;
+  background: transparent;
+  min-width: 0; /* ✅ flex 내부 input overflow 방지 */
+}
+
+.search-box button {
+  background: #4b6584;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 10px 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.search-box button:hover {
+  background: #34495e;
+}

@@ -1,0 +1,288 @@
+/* ==========================================================================
+   NewsLetterDetail.css (EventBoardDetail.css와 100% 규격 일치)
+   ========================================================================== */
+
+/* 1. 전체 컨테이너 - 공지사항/이벤트/뉴스레터 동일 흐름 유지 */
+.notice-list-wrapper, 
+.review-detail-wrapper,
+.event-detail-wrapper,
+.newsletter-detail-wrapper {
+    width: 100%;
+    margin: 0; 
+    padding: 20px 0 40px; 
+    box-sizing: border-box;
+}
+
+/* 2. 게시판 제목 - 공지사항과 위치/크기/여백 100% 일치 */
+.board-title {
+    font-size: 1.5rem;
+    margin: 0 0 24px 0;
+    font-weight: 800;
+    color: #2c3e50;
+    border-left: 5px solid #2c3e50;
+    padding-left: 15px;
+    text-align: left;
+}
+
+/* 3. 그리드 레이아웃 (뉴스레터 목록에서도 사용될 경우 대비) */
+.gallery-grid-container {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    height: 380px; 
+}
+
+.photo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.img-placeholder {
+    height: 250px; 
+    overflow: hidden;
+    background-color: #f9f9f9;
+}
+
+.img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.photo-info {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+}
+
+.photo-title {
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #2c3e50;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.photo-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #95a5a6;
+    font-size: 0.85rem;
+}
+
+/* 4. 하단 컨트롤 영역 - 페이지네이션 및 버튼 규격 */
+.list-pagination-area {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.page-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.page-buttons button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50% !important;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.page-buttons button.active {
+    background: #2c3e50 !important;
+    color: #fff !important;
+    border-color: #2c3e50 !important;
+}
+
+.footer-action-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 10px 0;
+}
+
+/* 검색창 스타일 통일 */
+.search-select-box {
+    height: 42px;
+    border-radius: 21px;
+    border: 1px solid #ddd;
+    padding: 0 15px;
+}
+
+.search-input-wrapper {
+    height: 42px;
+    border-radius: 21px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    background: #fff;
+}
+
+.search-input-wrapper input {
+    border: none;
+    outline: none;
+    width: 200px;
+}
+
+.btn-search {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* 글쓰기 버튼 위치 고정 */
+.btn-write-footer {
+    position: absolute;
+    right: 0;
+    height: 42px;
+    padding: 0 25px;
+    background: #2c3e50;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 5. 상세 페이지 (Detail) 규격 - 핵심 수정 부분 */
+.detail-container {
+    background: #fff;
+    padding: 40px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.detail-header-section {
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.detail-main-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    line-height: 1.3;
+    font-weight: 800;
+}
+
+.detail-sub-info {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.info-divider {
+    margin: 0 10px;
+    color: #eee;
+}
+
+.detail-body-text {
+    min-height: 400px;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    padding: 20px 0;
+}
+
+.detail-body-text img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.detail-bottom-actions {
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 버튼 디자인 일관성 유지 */
+.btn-edit-action,
+.btn-delete-action,
+.btn-bookmark-action,
+.btn-list-return {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-list-return {
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+}
+
+/* 6. 모바일 대응 */
+@media (max-width: 1024px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .gallery-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .btn-write-footer {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .detail-container {
+        padding: 20px;
+    }
+    .detail-bottom-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .left-group {
+        width: 100%;
+        justify-content: center;
+    }
+    .btn-list-return {
+        width: 100%;
+    }
+}

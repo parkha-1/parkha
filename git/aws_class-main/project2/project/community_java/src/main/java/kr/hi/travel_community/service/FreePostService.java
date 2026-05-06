@@ -1,0 +1,191 @@
+package kr.hi.travel_community.service;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.hi.travel_community.entity.FreePost;
+import kr.hi.travel_community.mapper.LikeMapper;
+import kr.hi.travel_community.model.vo.MemberVO;
+import kr.hi.travel_community.repository.BookMarkRepository;
+import kr.hi.travel_community.repository.CommentRepository;
+import kr.hi.travel_community.repository.FreeRepository;
+import kr.hi.travel_community.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class FreePostService {
+
+    private final FreeRepository postRepository;
+    private final LikeMapper likeMapper;
+    private final CommentRepository commentRepository;
+    private final MemberRepository memberRepository; 
+    private final BookMarkRepository bookMarkRepository;
+
+    @Value("${file.upload-dir:C:/travel_contents/uploads/pic/}")
+    private String uploadRoot;
+
+    private final String SERVER_URL = "/pic/";
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getRealAllPosts() {
+        return postRepository.findByPoDelOrderByPoNumDesc("N").stream()
+                .map(this::convertToMap)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void increaseViewCount(Integer id, HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String cookieName = "viewed_free_" + id;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName)) return;
+            }
+        }
+
+        if (postRepository.updateViewCount(id) > 0) {
+            Cookie newCookie = new Cookie(cookieName, "true");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            newCookie.setHttpOnly(true);
+            response.addCookie(newCookie);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getPostDetailWithImage(Integer id, Integer mbNum) {
+        return postRepository.findByPoNumAndPoDel(id, "N").map(p -> {
+            Map<String, Object> map = convertToMap(p);
+            map.put("comments", commentRepository.findByCoPoNumAndCoPoTypeAndCoDelOrderByCoDateAsc(id, "FREE", "N"));
+            map.put("isLikedByMe", mbNum != null && likeMapper.checkLikeStatus(id, mbNum) > 0);
+            
+            boolean isBookmarked = (mbNum != null) && bookMarkRepository.existsByBmMbNumAndBmPoNumAndBmPoType(mbNum, id, "FREE");
+            map.put("isBookmarkedByMe", isBookmarked);
+            
+            return map;
+        }).orElse(null);
+    }
+
+    @Transactional
+    public void savePost(FreePost post, List<MultipartFile> images) throws Exception {
+        post.setPoDate(LocalDateTime.now());
+        post.setPoView(0);
+        post.setPoUp(0);
+        post.setPoDel("N");
+        handleImages(post, images);
+        postRepository.save(post);
+    }
+
+    @Transactional
+    public void updatePost(Integer id, String title, String content, List<MultipartFile> images) throws Exception {
+        FreePost post = postRepository.findByPoNumAndPoDel(id, "N")
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        post.setPoTitle(title);
+        post.setPoContent(content);
+        if (images != null && !images.isEmpty()) {
+            handleImages(post, images);
+        }
+        postRepository.save(post);
+    }
+
+    @Transactional
+    public void deletePost(Integer id) {
+        postRepository.findByPoNumAndPoDel(id, "N").ifPresent(p -> p.setPoDel("Y"));
+    }
+
+    @Transactional
+    public String toggleLikeStatus(Integer poNum, Integer mbNum) {
+        int count = likeMapper.checkLikeStatus(poNum, mbNum);
+        FreePost post = postRepository.findByPoNumAndPoDel(poNum, "N")
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+
+        if (count == 0) {
+            likeMapper.insertLikeLog(poNum, mbNum);
+            post.setPoUp((post.getPoUp() == null ? 0 : post.getPoUp()) + 1);
+            postRepository.save(post);
+            return "liked";
+        } else {
+            likeMapper.deleteLikeLog(poNum, mbNum);
+            post.setPoUp(Math.max(0, (post.getPoUp() == null ? 0 : post.getPoUp()) - 1));
+            postRepository.save(post);
+            return "unliked";
+        }
+    }
+
+    private void handleImages(FreePost post, List<MultipartFile> images) throws Exception {
+        if (images == null || images.isEmpty()) return;
+
+        String cleanPath = uploadRoot.replace("\\", "/");
+        if (!cleanPath.endsWith("/")) cleanPath += "/";
+
+        File dir = new File(cleanPath);
+        if (!dir.exists()) dir.mkdirs();
+
+        List<String> savedNames = new ArrayList<>();
+        for (MultipartFile file : images) {
+            if (!file.isEmpty()) {
+                String originalFileName = file.getOriginalFilename();
+                String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String fileName = UUID.randomUUID().toString() + extension;
+
+                Path targetPath = Paths.get(cleanPath).resolve(fileName);
+                Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+                savedNames.add(fileName);
+            }
+        }
+        if (!savedNames.isEmpty()) post.setFileUrl(String.join(",", savedNames));
+    }
+
+    private Map<String, Object> convertToMap(FreePost p) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("poNum", p.getPoNum());
+        map.put("poTitle", p.getPoTitle());
+        map.put("poContent", p.getPoContent());
+        map.put("poDate", p.getPoDate() != null ? p.getPoDate().toString() : "");
+        map.put("poView", p.getPoView() != null ? p.getPoView() : 0);
+        map.put("poUp", p.getPoUp() != null ? p.getPoUp() : 0);
+        map.put("poMbNum", p.getPoMbNum());
+        map.put("commentCount", commentRepository.countByCoPoNumAndCoPoTypeAndCoDel(p.getPoNum(), "FREE", "N"));
+        
+        // 🚩 [최종 해결] 
+        // 람다식 내부의 형변환에서 에러가 날 경우, Optional을 직접 꺼내서 타입 추론을 피합니다.
+        String nickname = "알 수 없는 사용자";
+        try {
+            // memberRepository가 Generic 타입 문제로 MemberVO를 못 찾을 때를 대비해
+            // 결과물을 Object로 받은 뒤 런타임에 처리합니다.
+            Object result = memberRepository.findById(p.getPoMbNum()).orElse(null);
+            if (result instanceof MemberVO) {
+                nickname = ((MemberVO) result).getMb_nickname();
+            }
+        } catch (Exception e) {
+            // 에러 시 기본값 유지
+        }
+        map.put("mbNickname", nickname);
+        
+        if (p.getFileUrl() != null && !p.getFileUrl().trim().isEmpty()) {
+            String firstImg = p.getFileUrl().split(",")[0].trim();
+            map.put("fileUrl", SERVER_URL + firstImg);
+            map.put("poImg", SERVER_URL + firstImg); 
+        } else {
+            map.put("fileUrl", null);
+            map.put("poImg", null);
+        }
+        return map;
+    }
+}

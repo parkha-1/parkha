@@ -1,0 +1,274 @@
+/* ==========================================================================
+   EventBoardDetail.css (공지사항과 완벽한 규격 일치 및 그리드 최적화)
+   ========================================================================== */
+
+/* 1. 전체 컨테이너 - 공지사항(notice-list-wrapper)과 동일한 흐름 유지 */
+.notice-list-wrapper, 
+.review-detail-wrapper,
+.event-detail-wrapper {
+    width: 100%;
+    /* max-width를 제거하거나 공지사항과 동일하게 맞춤 */
+    margin: 0; 
+    padding: 20px 0 40px; 
+    box-sizing: border-box;
+}
+
+/* 2. 게시판 제목 - 공지사항과 위치/크기/여백 100% 일치 */
+.board-title {
+    font-size: 1.5rem;
+    margin: 0 0 24px 0;
+    font-weight: 800;
+    color: #2c3e50;
+    border-left: 5px solid #2c3e50; /* 공지사항과 동일한 포인트 */
+    padding-left: 15px;
+    text-align: left;
+}
+
+/* 3. 이벤트 그리드 레이아웃 - 사이드바 내부에서 6개(3x2) 유지 */
+.gallery-grid-container {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.gallery-grid {
+    display: grid;
+    /* 사이드바 너비를 고려한 3열 배치 */
+    grid-template-columns: repeat(3, 1fr);
+    /* 6개 카드 출력을 위해 2행 고정 또는 자동 */
+    gap: 25px;
+}
+
+.photo-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    height: 380px; /* 카드의 전체 높이 고정 */
+}
+
+.photo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.img-placeholder {
+    height: 250px; /* 이미지 영역 고정 */
+    overflow: hidden;
+    background-color: #f9f9f9;
+}
+
+.img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.photo-info {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+}
+
+.photo-title {
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #2c3e50;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.photo-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #95a5a6;
+    font-size: 0.85rem;
+}
+
+/* 4. 하단 컨트롤 영역 - 공지사항 규격과 100% 동일화 */
+.list-pagination-area {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.page-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.page-buttons button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50% !important;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.page-buttons button.active {
+    background: #2c3e50 !important;
+    color: #fff !important;
+    border-color: #2c3e50 !important;
+}
+
+.footer-action-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 10px 0;
+}
+
+/* 검색창 스타일 통일 */
+.search-select-box {
+    height: 42px;
+    border-radius: 21px;
+    border: 1px solid #ddd;
+    padding: 0 15px;
+}
+
+.search-input-wrapper {
+    height: 42px;
+    border-radius: 21px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    background: #fff;
+}
+
+.search-input-wrapper input {
+    border: none;
+    outline: none;
+    width: 200px;
+}
+
+.btn-search {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* 글쓰기 버튼 위치 고정 (공지사항과 동일) */
+.btn-write-footer {
+    position: absolute;
+    right: 0;
+    height: 42px;
+    padding: 0 25px;
+    background: #2c3e50;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 5. 상세 페이지 (Detail) 규격 교정 */
+.detail-container {
+    background: #fff;
+    padding: 40px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    /* 사이드바 내부에서 너무 퍼지지 않게 공지사항과 동일 패딩 유지 */
+}
+
+.detail-header-section {
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.detail-main-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.detail-sub-info {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.info-divider {
+    margin: 0 10px;
+    color: #eee;
+}
+
+.detail-body-text {
+    min-height: 400px;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    padding: 20px 0;
+}
+
+.detail-body-text img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.detail-bottom-actions {
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-edit-action,
+.btn-delete-action,
+.btn-bookmark-action,
+.btn-list-return {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-list-return {
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+}
+
+/* 모바일 대응 */
+@media (max-width: 1024px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .gallery-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .btn-write-footer {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+    }
+}

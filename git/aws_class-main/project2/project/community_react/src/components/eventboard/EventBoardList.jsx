@@ -1,0 +1,197 @@
+import React, { useState, useMemo } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+// 🚩 공지사항과 동일한 레이아웃 규격을 공유하기 위해 CSS 클래스 최적화
+import './EventBoardDetail.css'; 
+
+const EventBoardList = ({ posts = [] }) => {
+    const navigate = useNavigate();
+    const { user } = useOutletContext() || {};
+    
+    const [searchType, setSearchType] = useState("title");
+    const [searchKeyword, setSearchKeyword] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const postsPerPage = 6; 
+
+    const SERVER_URL = "http://localhost:8080";
+    const fallbackImage = "https://placehold.co/300x200?text=No+Image";
+
+    const isAdmin = user && (user.mb_rol === 'ADMIN' || user.mbRol === 'ADMIN' || user.mbLevel >= 10);
+
+    const getImageUrl = (post) => {
+        if (!post) return fallbackImage;
+        const { po_img, poImg, fileUrl, fileName, po_content, poContent } = post;
+        const targetUrl = po_img || poImg || fileUrl || fileName;
+
+        if (targetUrl && targetUrl !== "" && String(targetUrl) !== "null" && String(targetUrl) !== "undefined") {
+            if (String(targetUrl).startsWith('http') || String(targetUrl).startsWith('data:')) return targetUrl;
+            const extractedName = String(targetUrl).split(/[\\/]/).pop();
+            return `${SERVER_URL}/pic/${extractedName}`;
+        }
+        
+        const content = po_content || poContent;
+        if (content && typeof content === 'string') {
+            const imgRegex = /<img[^>]+src=["']([^"']+)["']/;
+            const match = content.match(imgRegex);
+            if (match && match[1]) {
+                const src = match[1];
+                if (src.startsWith('/pic/')) return `${SERVER_URL}${src}`;
+                return src;
+            }
+        }
+        return fallbackImage;
+    };
+
+    const filteredPosts = useMemo(() => {
+        const safePosts = Array.isArray(posts) ? posts : [];
+        const sortedPosts = [...safePosts].sort((a, b) => {
+            const aId = Number(a.po_num || a.poNum || a.id || 0);
+            const bId = Number(b.po_num || b.poNum || b.id || 0);
+            return bId - aId;
+        });
+        
+        if (!searchKeyword.trim()) return sortedPosts;
+
+        const keyword = searchKeyword.toLowerCase();
+        return sortedPosts.filter(post => {
+            const title = (post.po_title || post.poTitle || "").toLowerCase();
+            const content = (post.po_content || post.poContent || "").toLowerCase();
+            const author = String(post.po_mb_num || post.poMbNum || "");
+
+            if (searchType === "title") return title.includes(keyword);
+            if (searchType === "content") return content.includes(keyword);
+            if (searchType === "title_content") return title.includes(keyword) || content.includes(keyword);
+            if (searchType === "author") return author.includes(keyword);
+            return true;
+        });
+    }, [posts, searchKeyword, searchType]);
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+    const totalPages = Math.ceil(filteredPosts.length / postsPerPage) || 1;
+
+    const paginate = (pageNumber) => {
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+        setCurrentPage(pageNumber);
+        window.scrollTo(0, 0);
+    };
+
+    return (
+        /* 🚩 공지사항과 동일한 최상위 래퍼 클래스 사용 (위치 일관성) */
+        <div className="notice-list-wrapper">
+            {/* 🚩 공지사항과 제목 폰트, 마진, 위치 완벽 통일 */}
+            <h2 className="board-title">이벤트</h2>
+            
+            {/* 🚩 갤러리 그리드 영역 (사이드바 내부에서 6개 카드가 예쁘게 정렬되도록 감쌈) */}
+            <div className="gallery-grid-container">
+                <div className="gallery-grid">
+                    {currentPosts.length > 0 ? (
+                        currentPosts.map((post) => {
+                            const poNum = post.po_num || post.poNum || post.id;
+                            const dateValue = post.po_date || post.poDate;
+                            return (
+                                <div 
+                                    key={poNum || Math.random()} 
+                                    className="photo-card"
+                                    onClick={() => navigate(`/news/event/${poNum}`)}
+                                >
+                                    <div className="img-placeholder">
+                                        <img 
+                                            src={getImageUrl(post)} 
+                                            alt={post.po_title || post.poTitle} 
+                                            onError={(e) => { 
+                                                if (e.target.src !== fallbackImage) {
+                                                    e.target.onerror = null; 
+                                                    e.target.src = fallbackImage; 
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="photo-info">
+                                        <p className="photo-title">
+                                            {post.po_title || post.poTitle || "제목 없음"} 
+                                        </p>
+                                        <div className="photo-meta">
+                                            <span className="post-author">관리자</span>
+                                            <span className="post-date">
+                                                {dateValue ? String(dateValue).split('T')[0] : '-'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <div className="no-data-full">
+                            등록된 이벤트가 없습니다.
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* 🚩 하단 레이아웃 영역: 공지사항과 CSS 클래스/구조 100% 통일 */}
+            <div className="list-pagination-area">
+                <div className="page-buttons">
+                    <button 
+                        onClick={() => paginate(currentPage - 1)} 
+                        disabled={currentPage === 1}
+                    >
+                        &lt;
+                    </button>
+                    {[...Array(totalPages)].map((_, i) => (
+                        <button 
+                            key={i + 1} 
+                            className={currentPage === i + 1 ? 'active' : ''}
+                            onClick={() => paginate(i + 1)}
+                        >
+                            {i + 1}
+                        </button>
+                    ))}
+                    <button 
+                        onClick={() => paginate(currentPage + 1)} 
+                        disabled={currentPage === totalPages}
+                    >
+                        &gt;
+                    </button>
+                </div>
+
+                <div className="footer-action-row">
+                    <div className="search-footer">
+                        <select 
+                            className="search-select-box" 
+                            value={searchType} 
+                            onChange={(e) => setSearchType(e.target.value)}
+                        >
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                            <option value="title_content">제목+내용</option>
+                            <option value="author">작성자</option>
+                        </select>
+                        
+                        <div className="search-input-wrapper">
+                            <input 
+                                type="text" 
+                                placeholder="이벤트 검색" 
+                                value={searchKeyword} 
+                                onChange={(e) => setSearchKeyword(e.target.value)} 
+                                onKeyPress={(e) => e.key === 'Enter' && setCurrentPage(1)} 
+                            />
+                            <button className="btn-search" onClick={() => setCurrentPage(1)}>검색</button>
+                        </div>
+                    </div>
+
+                    {isAdmin && (
+                        <button 
+                            className="btn-write-footer" 
+                            onClick={() => navigate('/news/event/write')}
+                        >
+                            이벤트 작성
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default EventBoardList;
