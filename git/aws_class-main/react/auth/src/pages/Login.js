@@ -66,7 +66,7 @@ export function Login(){
 						<input type="password" name="pw" id="pw" onChange={inputChange}/>	
 					</div>
 				</div>
-				<button>회원가입</button>
+				<button>로그인</button>
 			</form>
 		</div>
 	)

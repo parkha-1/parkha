@@ -29,5 +29,8 @@ java_jik/.gitignore
 
 .ipynb_checkpoints/
 
-*.png
+*.keras
+*.model
+*.h5
 *.pkl
+__pycache__/
