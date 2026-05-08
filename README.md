@@ -12,4 +12,9 @@
 📂 Repository Guide
 자바,스프링부트,리액트,파이썬 등 통합 학습 기록 및 프로젝트 폴더
 
-현재 진행중인 프로젝트 : https://github.com/YH-KIKI/project
+
+
+현재 진행중인 프로젝트 (2026.04.24 ~ ) : https://github.com/YH-KIKI/project/tree/parkha
+
+지난 프로젝트 (2026.02.06 ~ 2026.03.06) : https://github.com/jeakeun/TravelProject
+                                         http://3.37.160.108/
