@@ -14,7 +14,7 @@
 
 
 
-현재 진행중인 프로젝트 (2026.04.24 ~ ) : https://github.com/YH-KIKI/project
+현재 진행중인 프로젝트 (2026.04.24 ~ ) : https://github.com/YH-KIKI/project/tree/parkha
 
 지난 프로젝트 (2026.02.06 ~ 2026.03.06) : https://github.com/jeakeun/TravelProject
                                          http://3.37.160.108/
