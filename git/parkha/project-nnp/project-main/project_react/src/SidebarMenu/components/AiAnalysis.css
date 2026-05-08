@@ -1,0 +1,187 @@
+/* 전체 컨테이너: 이중 여백 제거, 투명 배경, 양옆 24px 들여쓰기 */
+.analysis-container {
+  padding: 0 24px;
+  box-sizing: border-box;
+  background-color: transparent; 
+  width: 100%;
+  color: #4A3B32; 
+  font-family: 'Pretendard', sans-serif; 
+}
+
+/* 상단 헤더: 제목과 날짜 */
+.analysis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.analysis-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+  color: #333333;
+}
+
+.date-badge {
+  background-color: #F3E5DF;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6B5B54;
+}
+
+/* 메인 카드 영역 (냠냠 감성 테마 적용) */
+.analysis-card {
+  background-color: #FFFAF9; 
+  border: 2px solid #FFEDEA; 
+  border-radius: 30px; 
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(255, 182, 163, 0.5); 
+  width: 100%;
+  box-sizing: border-box; 
+  display: flex;
+  flex-direction: column;
+  gap: 30px; 
+}
+
+/* 1. 칼로리 요약 구역 */
+.calorie-section h3 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+}
+.calorie-info {
+  margin-bottom: 12px;
+}
+.current-kcal {
+  font-size: 32px;
+  font-weight: 800;
+  color: #FF7B89; 
+}
+.target-kcal {
+  font-size: 18px;
+  color: #A3938C;
+  font-weight: 500;
+}
+.calorie-message {
+  font-size: 14px;
+  color: #6B5B54;
+  text-align: right;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* 2. AI 등급 평가 구역 (둥근 박스) */
+.grade-section {
+  background-color: #FFFFFF; /* 카드 배경과 살짝 구분되게 흰색 유지 */
+  border: 1px solid #FFEDEA;
+  border-radius: 20px;
+  padding: 20px 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.grade-circle {
+  width: 60px;
+  height: 60px;
+  background-color: #FFFFFF;
+  border: 3px solid #FFB6C1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #FF7B89;
+  flex-shrink: 0;
+}
+.grade-text strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 6px;
+  color: #4A3B32;
+}
+.grade-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #8C7B74;
+}
+
+/* 3. 영양소 프로그레스 바 목록 */
+.macro-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.macro-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.macro-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 600;
+  color: #5C4D45;
+}
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: #F5EAE6; 
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  background-color: #FFB6C1; 
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-fill.carbs { background-color: #FFB6C1; } 
+.progress-fill.protein { background-color: #FFD285; } 
+.progress-fill.fat { background-color: #A2D5F2; } 
+.progress-fill.sodium { background-color: #DAB6FC; } 
+
+/* 4. 하단 AI 코치 피드백 구역 */
+.feedback-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #FFEDEA;
+  border-radius: 20px;
+  padding: 20px;
+  gap: 15px;
+}
+.feedback-section p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #4A3B32;
+  font-weight: 500;
+}
+.ai-coach-btn {
+  background-color: #FF8E9C; 
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(255, 142, 156, 0.3);
+  transition: transform 0.2s, background-color 0.2s;
+}
+.ai-coach-btn:hover {
+  background-color: #FF7B89;
+  transform: translateY(-2px);
+}
+.robot-icon {
+  font-size: 18px;
+}
